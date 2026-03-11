@@ -12,6 +12,7 @@ int main() {
         renderer_render(renderer);
         SDL_Delay(17);
     }
+    renderer_delete_renderer(renderer);
     return 0;
 }
 
