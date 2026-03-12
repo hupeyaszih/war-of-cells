@@ -11,6 +11,7 @@ find_package(SDL2 REQUIRED)
 add_executable(war-of-cells
     src/main.c
     src/renderer.c
+    src/simulation.c
 )
 
 target_link_libraries(war-of-cells PRIVATE SDL2::SDL2)

@@ -1,4 +1,5 @@
 #include "renderer.h"
+#include "globals.h"
 #include <SDL.h>
 #include <SDL2/SDL_events.h>
 #include <SDL_render.h>
@@ -10,11 +11,11 @@ static inline uint32_t get_uint32_from_color(int r, int g, int b){
     return (255 << 24) | (r << 16) | (g << 8) | b;
 }
 
-static inline void draw_point(SimulationRenderer* renderer, int x, int y, uint32_t color){
+static inline void draw_point(const SimulationRenderer* restrict renderer, int x, int y, uint32_t color){
     renderer->pixels[y * renderer->map_width + x] = color;
 }
 
- SimulationRenderer* renderer_create_new_renderer(int screen_width, int screen_height, int map_width, int map_height){
+ SimulationRenderer* renderer_create_new_renderer(const int screen_width, const int screen_height, const int map_width, const int map_height){
     SimulationRenderer* renderer = malloc(sizeof(SimulationRenderer));
     renderer->screen_width = screen_width;
     renderer->screen_height = screen_height;
@@ -29,7 +30,7 @@ static inline void draw_point(SimulationRenderer* renderer, int x, int y, uint32
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
-        printf("Couldn't initialize SDL: %s\n", SDL_GetError());
+        LOG_ERR("Couldn't initialize SDL: %s\n", SDL_GetError());
         exit(1);
     }
 
@@ -37,7 +38,7 @@ static inline void draw_point(SimulationRenderer* renderer, int x, int y, uint32
 
     if (!renderer->window)
     {
-        printf("Failed to open %d x %d window: %s\n", renderer->screen_width, renderer->screen_height, SDL_GetError());
+        LOG_ERR("Failed to open %d x %d window: %s\n", renderer->screen_width, renderer->screen_height, SDL_GetError());
         exit(1);
     }
 
@@ -47,7 +48,7 @@ static inline void draw_point(SimulationRenderer* renderer, int x, int y, uint32
 
     if (!renderer->renderer)
     {
-        printf("Failed to create renderer: %s\n", SDL_GetError());
+        LOG_ERR("Failed to create renderer: %s\n", SDL_GetError());
         exit(1);
     }
     // SET HINTS
@@ -82,7 +83,7 @@ void renderer_delete_renderer(SimulationRenderer *renderer){
 }
 
 
-void renderer_do_input(SimulationRenderer* renderer){
+void renderer_do_input(const SimulationRenderer* restrict renderer){
     SDL_Event event;
     while (SDL_PollEvent(&event)){
         switch (event.type)
@@ -113,7 +114,7 @@ void renderer_do_input(SimulationRenderer* renderer){
     }
 }
 
-void renderer_render(SimulationRenderer* renderer){
+void renderer_render(const SimulationRenderer* restrict renderer){
     SDL_RenderClear(renderer->renderer);
     SDL_RenderCopy(renderer->renderer, renderer->pixels_texture, NULL, NULL);
     SDL_RenderPresent(renderer->renderer);

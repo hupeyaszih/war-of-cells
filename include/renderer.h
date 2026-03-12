@@ -14,9 +14,9 @@ typedef struct {
     uint32_t* pixels;
 } SimulationRenderer;
 
-SimulationRenderer* renderer_create_new_renderer(int screen_width, int screen_height, int map_width, int map_height);
-void renderer_render(SimulationRenderer* renderer);
-void renderer_do_input(SimulationRenderer* renderer);
+SimulationRenderer* renderer_create_new_renderer(const int screen_width, const int screen_height, const int map_width, const int map_height);
+void renderer_render(const SimulationRenderer* restrict renderer);
+void renderer_do_input(const SimulationRenderer* restrict renderer);
 
 void renderer_delete_renderer(SimulationRenderer* renderer);
 
