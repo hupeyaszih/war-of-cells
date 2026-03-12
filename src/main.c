@@ -16,10 +16,15 @@ int main() {
     SimulationRenderer* renderer = renderer_create_new_renderer(screen_width, screen_height, map_width, map_height);
 
     //
+    int is_running = 0;
     SDL_Event event;
+    if(!simulation) is_running = -1;
+    if(!renderer) is_running = -1;
     for(;;){
-        renderer_do_input(renderer);
-        renderer_render(renderer);
+        if(is_running < 0) break;
+        is_running = renderer_do_input(renderer);
+        if(is_running < 0) break;
+        is_running = renderer_render(renderer);
         SDL_Delay(17);
     }
     //

@@ -31,7 +31,7 @@ static inline void draw_point(const SimulationRenderer* restrict renderer, int x
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         LOG_ERR("Couldn't initialize SDL: %s\n", SDL_GetError());
-        exit(1);
+        return NULL;
     }
 
     renderer->window = SDL_CreateWindow("Shooter 01", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, renderer->screen_width, renderer->screen_height, windowFlags);
@@ -39,7 +39,7 @@ static inline void draw_point(const SimulationRenderer* restrict renderer, int x
     if (!renderer->window)
     {
         LOG_ERR("Failed to open %d x %d window: %s\n", renderer->screen_width, renderer->screen_height, SDL_GetError());
-        exit(1);
+        return NULL;
     }
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
@@ -49,7 +49,7 @@ static inline void draw_point(const SimulationRenderer* restrict renderer, int x
     if (!renderer->renderer)
     {
         LOG_ERR("Failed to create renderer: %s\n", SDL_GetError());
-        exit(1);
+        return NULL;
     }
     // SET HINTS
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
@@ -79,11 +79,10 @@ void renderer_delete_renderer(SimulationRenderer *renderer){
     if(renderer->pixels_texture) SDL_DestroyTexture(renderer->pixels_texture);
     if(renderer->pixels) free(renderer->pixels);
     if(renderer) free(renderer);
-    renderer = NULL;
 }
 
 
-void renderer_do_input(const SimulationRenderer* restrict renderer){
+int renderer_do_input(const SimulationRenderer* restrict renderer){
     SDL_Event event;
     while (SDL_PollEvent(&event)){
         switch (event.type)
@@ -91,7 +90,7 @@ void renderer_do_input(const SimulationRenderer* restrict renderer){
             case SDL_KEYDOWN:
                 if(event.key.keysym.sym == SDLK_ESCAPE){
                     printf("but you forgot something..\n You did not say \"goodbye\" :(\n");
-                    exit(0);
+                    return -1;
                 }else if(event.key.keysym.sym == SDLK_p) {
                     int x = rand() % renderer->map_width;
                     int y = rand() % renderer->map_height;
@@ -100,23 +99,27 @@ void renderer_do_input(const SimulationRenderer* restrict renderer){
                     int g = rand() % 256;
                     int b = rand() % 256;
                     draw_point(renderer, x, y, get_uint32_from_color(r, g, b));
-                    SDL_UpdateTexture(renderer->pixels_texture, NULL, renderer->pixels, renderer->map_width * sizeof(uint32_t));
                 }
                 break;
 
             case SDL_QUIT:
                 printf("adios\n");
-                exit(0);
+                return -1;
                 break;
             default:
                 break;
         }
     }
+    return 0;
 }
 
-void renderer_render(const SimulationRenderer* restrict renderer){
+int renderer_render(const SimulationRenderer* restrict renderer){
     SDL_RenderClear(renderer->renderer);
+    SDL_UpdateTexture(renderer->pixels_texture, NULL, renderer->pixels, renderer->map_width * sizeof(uint32_t));
     SDL_RenderCopy(renderer->renderer, renderer->pixels_texture, NULL, NULL);
     SDL_RenderPresent(renderer->renderer);
+    return 0;
 }
 
+// this is running, so yeah, nothing else matters
+// (just kidding you, it does matter, this is running but this is not the point actually, the more important thing is how it works, why it works, and how I can do it better, that's it)

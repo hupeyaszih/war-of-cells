@@ -19,9 +19,8 @@ void simulation_delete_simulation(Simulation *simulation){
     if(simulation->cells) free(simulation->cells);
     if(simulation->cell_buffer) free(simulation->cell_buffer);
     if(simulation) free(simulation);
-    simulation = NULL;
 }
 
 void simulation_update(Simulation* restrict simulation){
-    simulation->cell_buffer = memcpy(simulation->cell_buffer, simulation->cells, sizeof(uint16_t)*simulation->cell_count);
+    memcpy(simulation->cell_buffer, simulation->cells, sizeof(uint16_t)*simulation->cell_count);
 }
