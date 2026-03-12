@@ -59,8 +59,8 @@ static inline void draw_point(SimulationRenderer* renderer, int x, int y, uint32
 
     for (int y = 0; y < renderer->map_height; y++) {
         for (int x = 0; x < renderer->map_width; x++) {
-            uint8_t r = x % 255;
-            uint8_t g = y % 255;
+            uint8_t r = x % 256;
+            uint8_t g = y % 256;
             uint8_t b = 150;
             // ARGB formatında pikseli oluştur (0xAARRGGBB)
             renderer->pixels[y * renderer->map_width + x] = (255 << 24) | (r << 16) | (g << 8) | b;
