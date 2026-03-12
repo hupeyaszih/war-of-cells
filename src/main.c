@@ -5,7 +5,7 @@
 int main() {
     printf("heyy, welcome\n");
 
-    SimulationRenderer* renderer = renderer_create_new_renderer(300, 300);
+    SimulationRenderer* renderer = renderer_create_new_renderer(512, 512, 256, 256);
     SDL_Event event;
     for(;;){
         renderer_do_input(renderer);
@@ -29,6 +29,5 @@ int main() {
 //
 //
 // I've searched all the universe and found my self within her eyes
-//
 //
 // Adios
