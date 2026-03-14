@@ -12,6 +12,7 @@ Simulation* simulation_new_simulation(int map_width, int map_height){
     simulation->cell_count = map_width * map_height;
     simulation->cells = malloc(sizeof(uint16_t) * simulation->cell_count);
     simulation->cell_buffer = malloc(sizeof(uint16_t)*simulation->cell_count);
+
     return simulation;
 }
 

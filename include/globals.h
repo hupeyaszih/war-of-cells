@@ -13,6 +13,9 @@
 #define LOG_INT(x) 
 #endif
 
+#define ERR_OK 0
+#define ERR_SOME_ERROR -1
+
 enum CELL_TEAM {
     RED,
     BLUE
